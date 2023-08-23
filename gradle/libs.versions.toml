@@ -1,0 +1,35 @@
+[versions]
+kotlin = "1.7.0"
+intellij = "1.16.0"
+androidGradlePlugin = "8.1.4"
+ksp = "1.7.0-1.0.6"
+kotlinpoet = "1.12.0"
+compose-bom = "2022.11.00"
+compose-compiler = "1.2.0"
+
+[libraries]
+ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+agp = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kgp = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
+kotlinpoet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoet" }
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-material = { group = "androidx.compose.material", name = "material" }
+
+[bundles]
+project-build = ["agp", "kgp"]
+project-processor = ["ksp", "kotlinpoet", "kotlinpoet-ksp"]
+project-ui = ["compose-foundation", "compose-preview", "compose-material"]
+
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+intellij = { id = "org.jetbrains.intellij", version.ref = "intellij" }

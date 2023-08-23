@@ -1,0 +1,21 @@
+<idea-plugin>
+    <id>com.daniily.ComposeDynamicPreviewPlugin</id>
+    <name>Compose Dynamic Preview</name>
+    <vendor email="daniily000@yandex.ru" url="https://daniily.com">Daniil Y</vendor>
+
+    <description><![CDATA[
+    A plugin for getting an enhanced Dynamic Preview support
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.kotlin</depends>
+    <depends>org.jetbrains.android</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.lineMarkerProvider
+                language="kotlin"
+                implementationClass="com.daniily.dynamicpreview.DynamicPreviewLineMarkerProvider"/>
+    </extensions>
+</idea-plugin>
