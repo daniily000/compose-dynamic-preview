@@ -2,7 +2,7 @@ import org.gradle.api.Project
 
 object Configs {
 
-    const val platformVersion = "1.6.21-0.1.1"
+    const val platformVersion = "0.1.2"
 
     abstract class SharedConfig : LibConfig {
         override val group: String = "com.daniily.preview"

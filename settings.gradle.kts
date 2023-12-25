@@ -19,7 +19,6 @@ dependencyResolutionManagement {
 }
 
 
-includeBuild("dependencies")
 includeBuild("project-build")
 
 include(":lib")

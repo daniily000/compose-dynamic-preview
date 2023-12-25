@@ -1,10 +1,6 @@
-import com.daniily.kdependency.gradle.add
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
-
 plugins {
     `kotlin-dsl`
     `maven-publish`
-    id("dependencies")
 }
 
 repositories {
@@ -21,7 +17,5 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(":dependencies")
-    add(BuildDependencies)
-    implementation("com.android.tools.build:gradle:8.1.0")
+    implementation(libs.bundles.project.build)
 }

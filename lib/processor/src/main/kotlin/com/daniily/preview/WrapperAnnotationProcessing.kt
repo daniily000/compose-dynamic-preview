@@ -1,5 +1,6 @@
 package com.daniily.preview
 
+import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
@@ -8,9 +9,12 @@ import com.google.devtools.ksp.symbol.KSType
 
 fun KSAnnotated.findWrapperAnnotation(): KSAnnotation? = findAnnotation<DynamicPreview.Wrapper>()
 
-fun KSAnnotated.findWrapperFromMetaAnnotation(): KSFunctionDeclaration? {
+fun KSAnnotated.findWrapperFromMetaAnnotation(logger: KSPLogger): KSFunctionDeclaration? {
     return annotations.mapNotNull {
-        it.annotationType.annotations.mapNotNull { it.getWrapperFunction() }.firstOrNull()
+        it.annotationType.resolve().declaration.annotations.mapNotNull {
+            logger.warn("Annotation of annotations: $it", it)
+            it.getWrapperFunction()
+        }.firstOrNull()
     }.firstOrNull()
 }
 
@@ -39,6 +43,10 @@ fun KSAnnotation.getWrapperFunction(): KSFunctionDeclaration? {
         } as? KSFunctionDeclaration
 }
 
-fun KSAnnotated.findWrapperFunction(): KSFunctionDeclaration? {
-    return findWrapperAnnotation()?.getWrapperFunction() ?: findWrapperFromMetaAnnotation()
+fun KSAnnotated.findWrapperFunction(logger: KSPLogger): KSFunctionDeclaration? {
+    val wrapperAnnotation = findWrapperAnnotation()
+    val wrapperFunction = wrapperAnnotation?.getWrapperFunction()
+    val wrapperFromMeta = findWrapperFromMetaAnnotation(logger)
+
+    return wrapperFunction ?: wrapperFromMeta
 }

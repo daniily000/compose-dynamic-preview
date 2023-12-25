@@ -9,7 +9,7 @@ private fun KSAnnotated.findPreviewClassAnnotation(): KSAnnotation? = findAnnota
 
 private fun KSAnnotated.findPreviewClassMetaAnnotation(): KSClassDeclaration? {
     return annotations.mapNotNull {
-        it.annotationType.annotations.mapNotNull { it.getPreviewClass() }.firstOrNull()
+        it.annotationType.resolve().declaration.annotations.mapNotNull { it.getPreviewClass() }.firstOrNull()
     }.firstOrNull()
 }
 

@@ -1,19 +1,10 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+plugins {
+    //trick: for the same plugin versions in all sub-modules
+    alias(libs.plugins.kotlin.jvm).apply(false)
+    alias(libs.plugins.kotlin.android).apply(false)
+    alias(libs.plugins.android.application).apply(false)
+    alias(libs.plugins.android.library).apply(false)
+    alias(libs.plugins.intellij).apply(false)
+}
 
 group = "com.daniily.preview"
-
-//repositories {
-//    mavenCentral()
-//}
-//
-//dependencies {
-//    testImplementation(kotlin("test"))
-//}
-//
-//tasks.test {
-//    useJUnitPlatform()
-//}
-//
-//tasks.withType<KotlinCompile> {
-//    kotlinOptions.jvmTarget = "1.8"
-//}

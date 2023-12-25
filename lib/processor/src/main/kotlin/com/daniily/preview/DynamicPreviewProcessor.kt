@@ -49,7 +49,7 @@ class DynamicPreviewProcessor(
     private fun generatePreview(
         function: KSFunctionDeclaration,
     ) {
-        val wrapperFunction = function.findWrapperFunction()
+        val wrapperFunction = function.findWrapperFunction(logger)
         val previewClass = function.findPreviewClass()
 
         with(propertyClassBuilder) {
