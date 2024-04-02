@@ -2,7 +2,6 @@ package com.daniily.preview
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
-import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
@@ -17,7 +16,6 @@ import com.squareup.kotlinpoet.ksp.writeTo
 
 class DynamicPreviewProcessor(
     private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger,
 ) : SymbolProcessor {
 
     private val propertyClassBuilder = PropertyClassBuilder()
@@ -49,7 +47,7 @@ class DynamicPreviewProcessor(
     private fun generatePreview(
         function: KSFunctionDeclaration,
     ) {
-        val wrapperFunction = function.findWrapperFunction(logger)
+        val wrapperFunction = function.findWrapperFunction()
         val previewClass = function.findPreviewClass()
 
         with(propertyClassBuilder) {
@@ -63,8 +61,8 @@ class DynamicPreviewProcessor(
                     buildPreviewFunction(baseName, dynamicProperties, wrapperFunction, previewClass)
 
                 val previewName = "${baseName}_DynamicPreview"
-                val parentFile =
-                    function.parent as? KSFile ?: error("Method $function must be declared at the top")
+                val parentFile = function.parent as? KSFile
+                    ?: error("Method $function must be declared at the top")
                 val pkg = parentFile.packageName.asString()
 
                 FileSpec.builder(pkg, previewName)
@@ -82,10 +80,7 @@ class DynamicPreviewProcessor(
 class DynamicPreviewProcessorProvider : SymbolProcessorProvider {
 
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return DynamicPreviewProcessor(
-            environment.codeGenerator,
-            environment.logger
-        )
+        return DynamicPreviewProcessor(environment.codeGenerator)
     }
 }
 

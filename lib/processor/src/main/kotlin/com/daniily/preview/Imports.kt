@@ -7,8 +7,6 @@ internal object Imports {
     const val composeMaterial = "androidx.compose.material"
     const val foundationLayout = "androidx.compose.foundation.layout"
     const val composeUi = "androidx.compose.ui"
-    const val devexpertsPreview = "com.devexperts.aurora.mobile.android.preview"
-    const val devexpertsTheme = "com.devexperts.aurora.mobile.android.presentation.theme"
 
     private const val composeToolingPreview = "androidx.compose.ui.tooling.preview"
 

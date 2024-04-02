@@ -12,13 +12,13 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.ksp.toClassName
 
 internal class PreviewFunctionBuilder {
 
     fun FileSpec.Builder.addPreviewFunctionImports(): FileSpec.Builder = this
         .addImport(composeRuntime, "remember")
-//        .addImport(devexpertsTheme, "AuroraTheme")
         .addImport(composeMaterial, "Surface")
         .addImport(foundationLayout, "Column")
         .addImport(foundationLayout, "fillMaxSize")
@@ -50,8 +50,7 @@ internal class PreviewFunctionBuilder {
             }
         }
 
-        val wrapperStart = wrapperInstantiation?.plus(".${wrapperFunction.simpleName.asString()} {") ?: ""
-        val wrapperEnd = wrapperInstantiation?.let { "}" } ?: ""
+        val wrapperStart = wrapperInstantiation?.plus(".${wrapperFunction.simpleName.asString()}")
 
         return FunSpec
             .builder(previewName)
@@ -59,15 +58,21 @@ internal class PreviewFunctionBuilder {
             .addAnnotation(actualPreviewAnnotation)
             .addModifiers(KModifier.PRIVATE)
             .addCode(
-                """
-    val properties = remember { ${baseName}_Properties() }
-    $wrapperStart
-        $baseName(
-            $args
-        )
-    $wrapperEnd
-    properties.list.PropertySwitchers()
-    """
+                buildCodeBlock {
+                    indent()
+                    beginControlFlow("val properties = remember")
+                    addStatement("${baseName}_Properties()")
+                    endControlFlow()
+                    wrapperStart?.let { beginControlFlow(it) }
+                    addStatement("$baseName(")
+                    indent()
+                    addStatement(args)
+                    unindent()
+                    addStatement(")")
+                    addStatement("properties.list.PropertySwitchers()")
+                    unindent()
+                    wrapperStart?.also { endControlFlow() }
+                }
             )
             .build()
     }
