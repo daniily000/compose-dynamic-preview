@@ -17,6 +17,7 @@ kotlinpoet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref 
 
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material = { group = "androidx.compose.material", name = "material" }
 
@@ -24,9 +25,10 @@ compose-material = { group = "androidx.compose.material", name = "material" }
 project-build = ["agp", "kgp"]
 project-processor = ["ksp", "kotlinpoet", "kotlinpoet-ksp"]
 project-ui = ["compose-foundation", "compose-preview", "compose-material"]
-
+project-sample = ["compose-foundation", "compose-preview", "compose-material"]
 
 [plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

@@ -26,3 +26,5 @@ include(":lib:api")
 include(":lib:processor")
 include(":lib:ui")
 include(":plugin")
+
+include(":sample")

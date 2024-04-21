@@ -39,7 +39,8 @@ internal class PreviewFunctionBuilder {
         val previewName = "${baseName}_DynamicPreview"
 
         val argsIndent = "            "
-        val args = properties.joinToString(separator = ",\n$argsIndent") { "${it.name} = properties.${it.name}" }
+        val args =
+            properties.joinToString(separator = ",\n$argsIndent") { "${it.name} = properties.${it.name}" }
 
         val wrapperInstantiation = wrapperFunction?.let {
             val parent = it.parent as KSClassDeclaration
@@ -50,7 +51,9 @@ internal class PreviewFunctionBuilder {
             }
         }
 
-        val wrapperStart = wrapperInstantiation?.plus(".${wrapperFunction.simpleName.asString()}")
+        val wrapperStart = wrapperInstantiation?.let {
+            "${wrapperFunction.qualifiedName?.asString()}"
+        } ?: "Column"
 
         return FunSpec
             .builder(previewName)
@@ -63,7 +66,7 @@ internal class PreviewFunctionBuilder {
                     beginControlFlow("val properties = remember")
                     addStatement("${baseName}_Properties()")
                     endControlFlow()
-                    wrapperStart?.let { beginControlFlow(it) }
+                    wrapperStart.let { beginControlFlow(it) }
                     addStatement("$baseName(")
                     indent()
                     addStatement(args)
@@ -71,7 +74,7 @@ internal class PreviewFunctionBuilder {
                     addStatement(")")
                     addStatement("properties.list.PropertySwitchers()")
                     unindent()
-                    wrapperStart?.also { endControlFlow() }
+                    wrapperStart.also { endControlFlow() }
                 }
             )
             .build()
